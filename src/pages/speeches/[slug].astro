@@ -1,0 +1,34 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import { SpeechSchema } from "../../content/config";
+import SpeechLayout from "../../layouts/SpeechLayout.astro";
+
+export async function getStaticPaths() {
+  const itemEntries = await getCollection("speeches");
+  return itemEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"speeches">;
+}
+
+const { entry } = Astro.props;
+const item: SpeechSchema = entry.data;
+const { Content } = await entry.render();
+---
+
+<SpeechLayout
+  title={item.title}
+  description={item.description}
+  heroImage={item.heroImage}
+  conference={item.conference}
+  conferenceDate={item.conferenceDate}
+  pubDate={item.pubDate}
+  heroImage={item.heroImage}
+  badge={item.badge}
+>
+  <Content />
+</StoreItemLayout>

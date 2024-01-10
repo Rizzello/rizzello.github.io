@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SpeechCard from "../components/SpeechCard.astro";
+import { getCollection } from "astro:content";
+
+const speeches = (await getCollection("speeches")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const last_speeches = speeches.slice(0, 3);
+---
+
+<BaseLayout sideBarActiveItemID="home">
+  <div class="pb-12 mt-5">
+    <div class="text-5xl pt-3 font-bold">I'm Paolo Rizzello</div>
+    <div class="text-3xl py-3 font-bold">Backend Web Developer and Software Engineer</div>
+    <div class="py-2">
+      <text class="text-lg">
+        Passionate well-rounded developer... but, let's be honest: i hate frontent 😜!
+      </text>
+    </div>
+  </div>
+
+  <div>
+    <div class="text-3xl w-full font-bold mb-2">Last speeches {"</>"}</div>
+  </div>
+  {
+    last_speeches.map((post) => (
+      <>
+        <SpeechCard
+          title={post.data.title}
+          img={post.data.heroImage}
+          conference={post.data.conference}
+          conferenceDate={post.data.conferenceDate}
+          desc={post.data.description}
+          url={"/speeches/" + post.slug}
+          target="_self"
+          badge={post.data.badge}
+          tags={post.data.tags}
+        />
+        <div class="divider my-1" />
+      </>
+    ))
+  }
+</BaseLayout>
